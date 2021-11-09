@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="RS Bot:jar">
+    <output-path>$USER_HOME$/DreamBot/Scripts</output-path>
+    <root id="archive" name="RS Bot.jar">
+      <element id="module-output" name="RS Bot" />
+    </root>
+  </artifact>
+</component>
