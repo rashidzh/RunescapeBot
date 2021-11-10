@@ -25,7 +25,7 @@ public class MainFrame extends JFrame{
         setContentPane(mainPanel);
         setTitle("Welcome");
         setSize(450,300);
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setVisible(true);
 
         OKButton.addActionListener(new ActionListener() {

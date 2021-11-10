@@ -3,26 +3,21 @@ package BasicWoodcutter;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.interactive.GameObjects;
-import org.dreambot.api.randoms.BankPinSolver;
+import org.dreambot.api.methods.walking.path.AbstractPath;
+import org.dreambot.api.methods.walking.path.impl.LocalPath;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.methods.MethodProvider;
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.filter.Filter;
-import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.script.AbstractScript;
-import org.dreambot.api.script.Category;
-import org.dreambot.api.script.ScriptManifest;
-import org.dreambot.api.utilities.impl.Condition;
 import org.dreambot.api.wrappers.interactive.GameObject;
-import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.walking.pathfinding.impl.dijkstra.DijkstraPathFinder;
+import org.dreambot.api.methods.map.Tile;
 
 
 import java.awt.*;
-import java.lang.reflect.Method;
 
 @ScriptManifest(
         name = "Script Name",
@@ -74,11 +69,10 @@ public class TestScript extends AbstractScript {
         if (!Inventory.isFull() && tree.interact("Chop down")){
             int countLog = Inventory.count("Logs");
             /** The first parameter of sleepWhile() is an interface, therefore you can use a lambda statement to pass the parameters to the
-             *  interface function, which in this case is verify() */
+             *  interface function, which in this case is verify() **/
             MethodProvider.sleepWhile(() -> tree.exists(),Calculations.random(8000,12000));
 
-
-        };
+        }
 
         if (Inventory.isFull()){
             if (Bank.openClosest()) {
@@ -87,7 +81,8 @@ public class TestScript extends AbstractScript {
                 if(Bank.depositAllItems()){
                     sleep(500,1000);
                     Bank.close();
-                };
+
+                }
 
             } else {
                 // If this returns false, that means the client is still walking
