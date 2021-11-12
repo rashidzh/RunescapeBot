@@ -1,10 +1,8 @@
-package BasicWoodcutter;
+package EasyWoodcutter;
 
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.interactive.GameObjects;
-import org.dreambot.api.methods.walking.path.AbstractPath;
-import org.dreambot.api.methods.walking.path.impl.LocalPath;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
@@ -13,59 +11,61 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.walking.pathfinding.impl.dijkstra.DijkstraPathFinder;
-import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.utilities.Timer;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
+
 
 
 import java.awt.*;
 
 @ScriptManifest(
-        name = "Script Name",
-        description = "My script description!",
-        author = "Developer Name",
+        name = "Easy Woodcutter",
+        description = "A script which cuts any tree down and banks at the nearest bank",
+        author = "Hejir Rashidzadeh",
         version = 1.0,
         category = Category.WOODCUTTING,
         image = "")
 
 
-public class TestScript extends AbstractScript {
+
+public class EasyWoodcutter extends AbstractScript {
+
+    private Image mainPaint = getImage("http://i.imgur.com/qbyHTS8.png");
+    private int logsCut;
+    private Timer timeRan;
+
+    private Image getImage(String url){
+        try {
+            return ImageIO.read(new URL(url));
+        }catch (IOException e){
+            log("no image found");
+            return null;
+        }
+    }
+
 
     @Override
     public void onStart(){
-        //String[] strArray = new String[]{"Foo","Bar","Baz"};
-        //MainFrame.main(strArray);
         MainFrame.main();
-        log("Hi2");
+        timeRan = new Timer();
+        log("Hello");
     }
 
     @Override
     public int onLoop() {
-        /**GameObject tree = GameObjects.closest(gameObject -> gameObject !=null && gameObject.getName().equals("Tree"));
-        GameObject tree = GameObjects.closest(new Filter<GameObject>() {
-            @Override
-            public boolean match(GameObject gameObject) {
-                return gameObject !=null && gameObject.getName().equals("Tree");
-            }
-        });
 
-        MethodProvider.sleepUntil(() -> Inventory.count("Log") > countLog,600);
-        MethodProvider.sleepUntil(new Condition() {
-            @Override
-            public boolean verify() {
-                return false;
-            }
-        }; */
+        // Creating an object called tree of class GameObject, we then call the method GameObjects.closest() which is a method with
+        // return type static GameObject {aka an object for its return type}. This is then set equal to our tree which is of type GameObject.
 
-
-        /** Creating an object called tree of class GameObject, we then call the method GameObjects.closest() which is a method with
-         *  return type static GameObject {aka an object for its return type}. This is then set equal to our tree which is of type
-         *  GameObject.
-         *  **/
         GameObject tree = GameObjects.closest("Tree");
         Player myPlayer = getLocalPlayer();
 
-        /** We then call the method interact() on our tree object which is a method of the class Interactable of which GameObject extends.
-         *  It returns a boolean to let us know if we were successful or not **/
+        // We then call the method interact() on our tree object which is a method of the class interactable of which GameObject extends.
+        // It returns a boolean to let us know if we were successful or not
         if (!Inventory.isFull() && tree.interact("Chop down")){
             int countLog = Inventory.count("Logs");
             /** The first parameter of sleepWhile() is an interface, therefore you can use a lambda statement to pass the parameters to the
@@ -102,7 +102,19 @@ public class TestScript extends AbstractScript {
     }
 
     @Override
-    public void onPaint(Graphics graphics) {
-        super.onPaint(graphics);
+    public void onPaint(Graphics g) {
+        super.onPaint(g);
+        Font font = new Font("Times new roamn", Font.PLAIN, 19);
+        g.setFont(font);
+        g.setColor(Color.BLACK);
+
+        g.drawImage(mainPaint, 121, 340, null);
+
+        g.drawString("" + timeRan.formatTime(), 121, 371);
+
+        g.drawString("" + logsCut, 121, 400);
+
+        g.drawString("" + logsCut * (int)(3600000D / (timeRan.elapsed())),121, 430);
     }
+
 }
