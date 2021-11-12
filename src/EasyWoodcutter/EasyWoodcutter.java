@@ -106,15 +106,15 @@ public class EasyWoodcutter extends AbstractScript {
         super.onPaint(g);
         Font font = new Font("Times new roamn", Font.PLAIN, 19);
         g.setFont(font);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
 
         g.drawImage(mainPaint, 121, 340, null);
 
-        g.drawString("" + timeRan.formatTime(), 121, 371);
+        g.drawString("Time: " + timeRan.formatTime(), 121, 371);
 
-        g.drawString("" + logsCut, 121, 400);
+        g.drawString("Logs Cut: " + logsCut, 121, 400);
 
-        g.drawString("" + logsCut * (int)(3600000D / (timeRan.elapsed())),121, 430);
+        g.drawString("Logs/min: " + logsCut * (int)(3600000D / (timeRan.elapsed())),121, 430);
     }
 
 }
